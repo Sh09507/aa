@@ -21,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
     } 
 	if (!empty($result["failed_attempts"])) {
-		if ($result["failed_attempts"] == 3) {
-			sleep(5);
+		if ($result["failed_attempts"] >= 3) {
+			//sleep looks like infinite loading, code stalls for 12 hours
+			sleep(43200);
 		}
 	}
 	$username = $_POST['username'];
@@ -77,9 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$error_message = $e->getMessage();				
 				echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
 			}
-			//if ($result["failed_attempts"] = 3) {
-				//sleep(43200);
-			//}
 		}
 	}
 }
