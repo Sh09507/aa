@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$dbquery -> bindValue(':ip', $_SERVER['REMOTE_ADDR']);
 				$dbquery -> bindValue(':user', $username); 
 				$dbquery -> bindValue(':pass', $password);
-				$dbquery -> bindValue(':result', $result);
+				$dbquery -> bindValue(':result', $result["failed_attempts"]);
 				$dbquery -> execute();
 			} catch (PDOException $e) {
 				$error_message = $e->getMessage();				
