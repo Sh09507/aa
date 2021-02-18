@@ -76,9 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			} catch (PDOException $e) {
 				$error_message = $e->getMessage();				
 				echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
-			}if ($result["failed_attempts"] = 3) {
-				sleep(43200);
 			}
+			//if ($result["failed_attempts"] = 3) {
+				//sleep(43200);
+			//}
 		}
 	}
 }
