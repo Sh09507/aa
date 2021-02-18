@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } 
 	if (!empty($result["failed_attempts"])) {
 		if ($result["failed_attempts"] == 3) {
-			sleep(43200);
+			sleep(5);
 		}
 	}
 	$username = $_POST['username'];
