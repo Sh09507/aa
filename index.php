@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = $e->getMessage();
 		echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
     } 
-	if (!empty($result)) {
+	if (!empty($result["failed_attempts"])) {
 		echo $result["failed_attempts"];
 		// if ($result = 3) {
 			// sleep(43200);
