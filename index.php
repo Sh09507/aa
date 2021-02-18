@@ -3,7 +3,6 @@
 	// Due Date:   2/9/2021
 	// Attacking Authentication
 	// It took about 21 minutes to brute force the Username and Password
-	// 
 $login = False;
 $username = "";
 $password = "";
@@ -12,7 +11,7 @@ require_once 'database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	try {
-        $query = 'SELECT failed_attempts FROM Attacking_Authentication WHERE IP=:ip; ORDER BY ID DESC LIMIT 1;';
+        $query = 'SELECT failed_attempts FROM Attacking_Authentication WHERE IP=:ip ORDER BY ID DESC LIMIT 1;';
         $dbquery = $myDBconnection -> prepare($query);
         $dbquery -> bindValue(':ip', $_SERVER['REMOTE_ADDR']);
         $dbquery -> execute();
@@ -40,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		}
 	} else {
 		try {
-            $query = 'SELECT failed_attempts FROM Attacking_Authentication WHERE IP=:ip; ORDER BY ID DESC LIMIT 1;';
+            $query = 'SELECT failed_attempts FROM Attacking_Authentication WHERE IP=:ip ORDER BY ID DESC LIMIT 1;';
             $dbquery = $myDBconnection -> prepare($query);
             $dbquery -> bindValue(':ip', $_SERVER['REMOTE_ADDR']);
             $dbquery -> execute();
