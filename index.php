@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
     } 
 	if (!empty($result)) {
-		echo $result;
+		echo $result["failed_attempts"];
 		// if ($result = 3) {
 			// sleep(43200);
 		// }
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error_message = $e->getMessage();
             echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
         }
-		if (empty($result)) {
+		if (empty($result["failed_attempts"])) {
 			try {
 				$query = 'INSERT INTO Attacking_Authentication (IP, user_name, password, date, failed_attempts) VALUES (:ip, :user, :pass, NOW(), 1);';
 				$dbquery = $myDBconnection -> prepare($query);
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
 			}
 		} else {
-			$result = $result + 1 ;
+			$result["failed_attempts"] = $result["failed_attempts"] + 1 ;
 			try {
 				$query = 'INSERT INTO Attacking_Authentication (IP, user_name, password, date, failed_attempts) VALUES (:ip, :user, :pass, NOW(), :result);';
 				$dbquery = $myDBconnection -> prepare($query);
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			} catch (PDOException $e) {
 				$error_message = $e->getMessage();				
 				echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
-			}if ($result = 3) {
+			}if ($result["failed_attempts"] = 3) {
 				sleep(43200);
 			}
 		}
