@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
     } 
 	if (!empty($result["failed_attempts"])) {
-		if ($result["failed_attempts"] = 3) {
+		if ($result["failed_attempts"] == 3) {
 			sleep(43200);
 		}
 	}
