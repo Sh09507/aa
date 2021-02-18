@@ -3,13 +3,15 @@
 	// Due Date:   2/9/2021
 	// Attacking Authentication
 	// It took about 21 minutes to brute force the Username and Password
+	// I used a database to keep track of the IP of users failing login attempts more than 3 times, when they have attepemted over the limited chances they are locked out from loging in again for 12 hours. After the 12 hours they can try again 3 more times. The database records the username and passwords used to attempt logging in and when they tried logging in.
 $login = False;
 $username = "";
 $password = "";
-//Connect to DB
+//Connects to Database
 require_once 'database.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	//Will check if the user already has failed login attempts logged in the database. If they have 3 failed attempts logged in the data base the IP address will be locked out for 12 hours. Each failed attempt is logged individually, so the queary pulls the most recent attempt of that IP address in decending order.
 	try {
         $query = 'SELECT failed_attempts FROM Attacking_Authentication WHERE IP=:ip ORDER BY ID DESC LIMIT 1;';
         $dbquery = $myDBconnection -> prepare($query);
@@ -30,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$password = $_POST['password'];
 	if ($_POST['username'] === 'ansible' && $_POST['password'] === 'abc123') {
 		$login = True;
+		//A successful login will result in the failed attempt count as 0, thus no penalty
 		try {
             $query = 'INSERT INTO Attacking_Authentication (IP, user_name, password, date, failed_attempts) VALUES (:ip, :user, :pass, NOW(), 0);';
             $dbquery = $myDBconnection -> prepare($query);
@@ -41,7 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$error_message = $e->getMessage();				
 			echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
 		}
+	// else statement for a failed login
 	} else {
+		// failed login will result in quearing the database to check the current count of failed attempts
 		try {
             $query = 'SELECT failed_attempts FROM Attacking_Authentication WHERE IP=:ip ORDER BY ID DESC LIMIT 1;';
             $dbquery = $myDBconnection -> prepare($query);
@@ -52,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error_message = $e->getMessage();
             echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
         }
+		// if no attempts have been logged then the database will be quearied to set the failed attempt count to 1
 		if (empty($result["failed_attempts"])) {
 			try {
 				$query = 'INSERT INTO Attacking_Authentication (IP, user_name, password, date, failed_attempts) VALUES (:ip, :user, :pass, NOW(), 1);';
@@ -65,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
 			}
 		} else {
+			// If the user as failed attempts logged then the database takes the current failed attempts count and adds 1 
 			$result["failed_attempts"] = $result["failed_attempts"] + 1 ;
 			try {
 				$query = 'INSERT INTO Attacking_Authentication (IP, user_name, password, date, failed_attempts) VALUES (:ip, :user, :pass, NOW(), :result);';
