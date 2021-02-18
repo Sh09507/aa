@@ -21,9 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
     } 
 	if (!empty($result)) {
-		if ($result = 3) {
-			sleep(43200);
-		}
+		echo $result;
+		// if ($result = 3) {
+			// sleep(43200);
+		// }
 	}
 	$username = $_POST['username'];
 	$password = $_POST['password'];
